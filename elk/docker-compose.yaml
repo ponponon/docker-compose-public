@@ -1,0 +1,23 @@
+version: "3"
+services:
+  elk-elasticsearch:
+    container_name: elk-elasticsearch
+    image: elasticsearch:7.17.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
+
+
+  elk-kibana:
+    container_name: elk-kibana
+    image: kibana:7.17.1
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://192.168.31.245:9200
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
+    
