@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+
+    myGrafana:
+        container_name: myGrafana
+        image: grafana/grafana
+        restart: always           
+        ports:
+            - "3000:3000"
+
+
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus
+        restart: always           
+        ports:
+            - "9090:9090"
+        volumes:
+            - /home/vobile/opt/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+
+
+    alertmanager:
+        container_name: alertmanager
+        image: prom/alertmanager
+        ports:
+            - "9093:9093"
+        volumes:
+            - /home/vobile/opt/monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+            
+
+    # prometheus-webhook-dingtalk:
+    #     container_name: prometheus-webhook-dingtalk
+    #     image: timonwong/prometheus-webhook-dingtalk
+    #     volumes:
+    #         - /home/vobile/opt/monitoring/config.yaml:/etc/prometheus-webhook-dingtalk/config.yml
+    #     ports:
+    #         - "8060:8060"
+
+    # mysqld-exporter:
+    #     container_name: mysqld-exporter
+    #     image: prom/mysqld-exporter
+    #     environment:
+    #         DATA_SOURCE_NAME: root:123456@(192.168.26.174:3306)/
+    #     ports:
+    #         - "9104:9104"
+            
+    # mysql8:
+    #     container_name: mysql8     
+    #     image: mysql:8  
+    #     restart: always             
+    #     ports:
+    #         - "3306:3306"
+    #     environment:
+    #         - MYSQL_ROOT_PASSWORD=123456
+    
+    # mysql5.5:
+    #     container_name: mysql5.5  
+    #     image: mysql:8               
+    #     ports:
+    #         - "3307:3306"
+    #     environment:
+    #         MYSQL_ROOT_PASSWORD: 123456
+            
+    # influxdb:
+    #     image: influxdb:1.8
+    #     ports:
+    #     - "8086:8086"
+
+    # pushgateway:
+    #     image: prom/pushgateway
+    #     ports:
+    #     - "9091:9091"
+

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  rabbitmq3-management:
+    container_name: rabbitmq3-management
+    image: rabbitmq:3-management
+    hostname: rabbitmq3-management-master
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "1"
+    environment:
+      - RABBITMQ_DEFAULT_USER=pon
+      - RABBITMQ_DEFAULT_PASS=pon
+    volumes:
+      - "/home/bot/opt/docker-compose-public/rabbit/volumes:/var/lib/rabbitmq"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
