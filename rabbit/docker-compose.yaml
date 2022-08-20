@@ -3,7 +3,7 @@ services:
   rabbitmq3-management:
     container_name: rabbitmq3-management
     image: rabbitmq:3-management
-    hostname: rabbitmq3-management-master
+    hostname: rabbitmq3-management-standalone
     logging:
       driver: json-file
       options:
