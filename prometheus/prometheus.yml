@@ -19,44 +19,20 @@ rule_files:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-    # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-    - job_name: "prometheus"
-
-      # metrics_path defaults to '/metrics'
-      # scheme defaults to 'http'.
-
+    - job_name: "amd5700g"
       static_configs:
-          - targets: ["localhost:9090"]
+          - targets: ["192.168.31.245:9100"]
 
-    - job_name: "i7-4770k"
-      static_configs:
-          - targets: ["192.168.26.174:9100"]
-
-    # 爬虫监控
-    - job_name: "crawler_monitoring"
-      scrape_interval: 300s
-      static_configs:
-          - targets: ["192.168.26.174:8000"]
-        #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
-
-        # 收集MySQL的监控数据
-    # - job_name: "MySQL"
+    # # 爬虫监控
+    # - job_name: "crawler_monitoring"
+    #   scrape_interval: 300s
     #   static_configs:
-    #       - targets: ["192.168.26.174:9104"]
+    #       - targets: ["192.168.26.174:8000"]
+    #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
 
-    # # 收集MySQL的监控数据
-    # - job_name: "fastapi"
+
+    # - job_name: "meta-console-metrics"
+    #   scrape_interval: 60s
     #   static_configs:
-    #       - targets: ["192.168.26.130:5002"]
-
-    # # 收集MySQL的监控数据
-    # - job_name: "pushgateawy"
-    #   static_configs:
-    #       - targets: ["192.168.26.174:9091"]
-
-
-    - job_name: "meta-console-metrics"
-      scrape_interval: 60s
-      static_configs:
-          - targets: ["47.110.134.226:8000"]
-        #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
+    #       - targets: ["47.110.134.226:8000"]
+    #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
