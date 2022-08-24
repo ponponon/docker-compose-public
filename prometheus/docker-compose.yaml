@@ -15,6 +15,7 @@ services:
       - "9090:9090"
     volumes:
       - /home/bot/opt/docker-compose-public/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/bot/opt/docker-compose-public/prometheus/rules:/etc/prometheus/rules/
 
   alertmanager:
     container_name: alertmanager

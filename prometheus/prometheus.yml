@@ -1,38 +1,38 @@
 # my global config
 global:
-    scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-    evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-    # scrape_timeout is set to the global default (10s).
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
 
-# # Alertmanager configuration
-# alerting:
-#     alertmanagers:
-#         - static_configs:
-#               - targets:
-#                 # - alertmanager:9093
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - 192.168.31.245:9093
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
-    # - "first_rules.yml"
-    # - "second_rules.yml"
+  - "rules/*rules.yml"
+  - "/etc/prometheus/rules/*rules.yml"
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-    - job_name: "amd5700g"
-      static_configs:
-          - targets: ["192.168.31.245:9100"]
+  - job_name: "node_monitoring"
+    static_configs:
+      - targets: ["192.168.31.245:9100"]
+      - targets: ["192.168.31.94:9100"]
 
-    # # 爬虫监控
-    # - job_name: "crawler_monitoring"
-    #   scrape_interval: 300s
-    #   static_configs:
-    #       - targets: ["192.168.26.174:8000"]
-    #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
+  # # 爬虫监控
+  # - job_name: "crawler_monitoring"
+  #   scrape_interval: 300s
+  #   static_configs:
+  #       - targets: ["192.168.26.174:8000"]
+  #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
 
-
-    # - job_name: "meta-console-metrics"
-    #   scrape_interval: 60s
-    #   static_configs:
-    #       - targets: ["47.110.134.226:8000"]
-    #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
+  # - job_name: "meta-console-metrics"
+  #   scrape_interval: 60s
+  #   static_configs:
+  #       - targets: ["47.110.134.226:8000"]
+  #     #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]

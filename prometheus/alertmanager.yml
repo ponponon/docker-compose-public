@@ -1,43 +1,108 @@
+## Alertmanager 配置文件
 global:
-  # 在没有报警的情况下声明为已解决的时间
-  resolve_timeout: 2m
-  # 配置邮件发送信息
-  smtp_smarthost: "smtp.qiye.aliyun.com:465"
-  smtp_from: "your_email"
-  smtp_auth_username: "your_email"
-  smtp_auth_password: "email_passwd"
-  smtp_hello: "your_email"
-  smtp_require_tls: false
-
-  # 所有报警信息进入后的根路由，用来设置报警的分发策略
+  resolve_timeout: 5m
+  # smtp配置
+  smtp_from: "123456789@qq.com"
+  smtp_smarthost: "smtp.qq.com:465"
+  smtp_auth_username: "123456789@qq.com"
+  smtp_auth_password: "auth_pass"
+  smtp_require_tls: true
+# email、企业微信的模板配置存放位置，钉钉的模板会单独讲如果配置。
+templates:
+  - "/data/alertmanager/templates/*.tmpl"
+# 路由分组
 route:
-  # 这里的标签列表是接收到报警信息后的重新分组标签，例如，接收到的报警信息里面有许多具有 cluster=A 和 alertname=LatncyHigh 这样的标签的报警信息将会批量被聚合到一个分组里面
-  group_by: ["alertname", "cluster"]
-  # 当一个新的报警分组被创建后，需要等待至少group_wait时间来初始化通知，这种方式可以确保您能有足够的时间为同一分组来获取多个警报，然后一起触发这个报警信息。
-  group_wait: 30s
+  receiver: ops
+  group_wait: 30s # 在组内等待所配置的时间，如果同组内，30秒内出现相同报警，在一个组内出现。
+  group_interval: 5m # 如果组内内容不变化，合并为一条警报信息，5m后发送。
+  repeat_interval: 24h # 发送报警间隔，如果指定时间内没有修复，则重新发送报警。
+  group_by: [alertname] # 报警分组
 
-  # 当第一个报警发送后，等待'group_interval'时间来发送新的一组报警信息。
-  group_interval: 5m
-
-  # 如果一个报警信息已经发送成功了，等待'repeat_interval'时间来重新发送他们
-  repeat_interval: 5m
-
-  # 默认的receiver：如果一个报警没有被一个route匹配，则发送给默认的接收器
-  receiver: default # 优先使用default发送
-
-  # 上面所有的属性都由所有子路由继承，并且可以在每个子路由上进行覆盖。
-  routes: #子路由，使用email发送
-    - receiver: email
-      match_re:
-        serverity: email # label 匹配email
+  routes:
+    - match:
+        team: operations
+      group_by: [env, dc]
+      receiver: "ops"
+    - match_re:
+        service: nginx|apache
+      receiver: "web"
+    - match_re:
+        service: hbase|spark
+      receiver: "hadoop"
+    - match_re:
+        service: mysql|mongodb
+      receiver: "db"
+    # 接收器
+    # 抑制测试配置
+    - receiver: ops
       group_wait: 10s
+      match:
+        status: "High"
+    # ops
+    - receiver: ops # 路由和标签，根据match来指定发送目标，如果 rule的lable 包含 alertname， 使用 ops 来发送
+      group_wait: 10s
+      match:
+        team: operations
+    # web
+    - receiver: db # 路由和标签，根据match来指定发送目标，如果 rule的lable 包含 alertname， 使用 db 来发送
+      group_wait: 10s
+      match:
+        team: db
+# 接收器指定发送人以及发送渠道
 receivers:
-  - name: "default"
-    webhook_configs:
-      - url: http://localhost:8060/dingtalk/webhook1/send
-        send_resolved: true # 发送已解决通知
-
-  - name: "email"
+  # ops分组的定义
+  - name: ops
     email_configs:
-      - to: "email@qq.com"
+      - to: "9935226@qq.com,10000@qq.com"
         send_resolved: true
+        headers:
+          subject: "[operations] 报警邮件"
+          from: "警报中心"
+          to: "小煜狼皇"
+    # 钉钉配置
+    webhook_configs:
+      - url: http://localhost:8071/dingtalk/ops/send
+        # 企业微信配置
+    wechat_configs:
+      - corp_id: "ww5421dksajhdasjkhj"
+        api_url: "https://qyapi.weixin.qq.com/cgi-bin/"
+        send_resolved: true
+        to_party: "2"
+        agent_id: "1000002"
+        api_secret: "Tm1kkEE3RGqVhv5hO-khdakjsdkjsahjkdksahjkdsahkj"
+
+  # web
+  - name: web
+    email_configs:
+      - to: "9935226@qq.com"
+        send_resolved: true
+        headers: { Subject: "[web] 报警邮件" } # 接收邮件的标题
+    webhook_configs:
+      - url: http://localhost:8072/dingtalk/web/send
+      - url: http://localhost:8073/dingtalk/ops/send
+  # db
+  - name: db
+    email_configs:
+      - to: "9935226@qq.com"
+        send_resolved: true
+        headers: { Subject: "[db] 报警邮件" } # 接收邮件的标题
+    webhook_configs:
+      - url: http://localhost:8074/dingtalk/db/send
+      - url: http://localhost:8075/dingtalk/ops/send
+  # hadoop
+  - name: hadoop
+    email_configs:
+      - to: "9935226@qq.com"
+        send_resolved: true
+        headers: { Subject: "[hadoop] 报警邮件" } # 接收邮件的标题
+    webhook_configs:
+      - url: http://localhost:8076/dingtalk/hadoop/send
+      - url: http://localhost:8077/dingtalk/ops/send
+
+# 抑制器配置
+inhibit_rules: # 抑制规则
+  - source_match: # 源标签警报触发时抑制含有目标标签的警报，在当前警报匹配 status: 'High'
+      status: "High" # 此处的抑制匹配一定在最上面的route中配置不然，会提示找不key。
+    target_match:
+      status: "Warning" # 目标标签值正则匹配，可以是正则表达式如: ".*MySQL.*"
+    equal: ["alertname", "operations", "instance"] # 确保这个配置下的标签内容相同才会抑制，也就是说警报中必须有这三个标签值才会被抑制。
