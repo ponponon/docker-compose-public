@@ -1,12 +1,20 @@
 groups:
   - name: test-rules
     rules:
-      - alert: InstanceDown # 告警名称
-        expr: up == 0 # 告警的判定条件，参考Prometheus高级查询来设定
-        for: 10s # 满足告警条件持续时间多久后，才会发送告警
+      # - alert: InstanceDown # 告警名称
+      #   expr: up == 0 # 告警的判定条件，参考Prometheus高级查询来设定
+      #   for: 1s # 满足告警条件持续时间多久后，才会发送告警
+      #   labels: #标签项
+      #     severity: error
+      #   annotations: # 解析项，详细解释告警信息
+      #     summary: "{{$labels.instance}}: has been down"
+      #     description: "{{$labels.instance}}: job {{$labels.job}} has been down "
+      - alert: crawl_monitoring # 告警名称
+        expr: clipresult_parse_result{success="0"} >0 # 告警的判定条件，参考Prometheus高级查询来设定
+        for: 3s # 满足告警条件持续时间多久后，才会发送告警
         labels: #标签项
           severity: error
         annotations: # 解析项，详细解释告警信息
-          summary: "{{$labels.instance}}: has been down"
-          description: "{{$labels.instance}}: job {{$labels.job}} has been down "
+          summary: "track_source_id: {{$labels.track_source_id}} 有解析失败"
+          description: "track_source_id: {{$labels.track_source_id}} 解析失败 {{ $value }} 次"
           

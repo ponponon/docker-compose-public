@@ -13,8 +13,8 @@ templates:
 # 路由分组
 route:
   receiver: ops
-  group_wait: 30s # 在组内等待所配置的时间，如果同组内，30秒内出现相同报警，在一个组内出现。
-  group_interval: 5m # 如果组内内容不变化，合并为一条警报信息，5m后发送。
+  group_wait: 10s # 在组内等待所配置的时间，如果同组内，30秒内出现相同报警，在一个组内出现。
+  group_interval: 10s # 如果组内内容不变化，合并为一条警报信息，5m后发送。
   repeat_interval: 24h # 发送报警间隔，如果指定时间内没有修复，则重新发送报警。
   group_by: [alertname] # 报警分组
 
@@ -61,7 +61,9 @@ receivers:
           to: "小煜狼皇"
     # 钉钉配置
     webhook_configs:
-      - url: http://localhost:8071/dingtalk/ops/send
+      # - url: http://192.168.31.245:5002/
+      - url: http://192.168.31.103:8110/push/clipresult_parse_result/
+      # - url: https://oapi.dingtalk.com/robot/send?access_token=1b5755d1a6a857761d892d5127dcceb74729594d5b91c36e7222b811b84fcbe5
         # 企业微信配置
     wechat_configs:
       - corp_id: "ww5421dksajhdasjkhj"

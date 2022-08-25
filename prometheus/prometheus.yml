@@ -23,6 +23,7 @@ scrape_configs:
     static_configs:
       - targets: ["192.168.31.245:9100"]
       - targets: ["192.168.31.94:9100"]
+      - targets: ["192.168.31.103:8000"]
 
   # # 爬虫监控
   # - job_name: "crawler_monitoring"
