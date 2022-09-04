@@ -23,15 +23,6 @@ route:
         team: operations
       group_by: [env, dc]
       receiver: "ops"
-    - match_re:
-        service: nginx|apache
-      receiver: "web"
-    - match_re:
-        service: hbase|spark
-      receiver: "hadoop"
-    - match_re:
-        service: mysql|mongodb
-      receiver: "db"
     # 接收器
     # 抑制测试配置
     - receiver: ops
@@ -43,64 +34,13 @@ route:
       group_wait: 10s
       match:
         team: operations
-    # web
-    - receiver: db # 路由和标签，根据match来指定发送目标，如果 rule的lable 包含 alertname， 使用 db 来发送
-      group_wait: 10s
-      match:
-        team: db
-# 接收器指定发送人以及发送渠道
 receivers:
   # ops分组的定义
   - name: ops
-    email_configs:
-      - to: "9935226@qq.com,10000@qq.com"
-        send_resolved: true
-        headers:
-          subject: "[operations] 报警邮件"
-          from: "警报中心"
-          to: "小煜狼皇"
     # 钉钉配置
     webhook_configs:
       # - url: http://192.168.31.245:5002/
-      - url: http://192.168.31.103:8110/push/clipresult_parse_result/
-      # - url: https://oapi.dingtalk.com/robot/send?access_token=1b5755d1a6a857761d892d5127dcceb74729594d5b91c36e7222b811b84fcbe5
-        # 企业微信配置
-    wechat_configs:
-      - corp_id: "ww5421dksajhdasjkhj"
-        api_url: "https://qyapi.weixin.qq.com/cgi-bin/"
-        send_resolved: true
-        to_party: "2"
-        agent_id: "1000002"
-        api_secret: "Tm1kkEE3RGqVhv5hO-khdakjsdkjsahjkdksahjkdsahkj"
-
-  # web
-  - name: web
-    email_configs:
-      - to: "9935226@qq.com"
-        send_resolved: true
-        headers: { Subject: "[web] 报警邮件" } # 接收邮件的标题
-    webhook_configs:
-      - url: http://localhost:8072/dingtalk/web/send
-      - url: http://localhost:8073/dingtalk/ops/send
-  # db
-  - name: db
-    email_configs:
-      - to: "9935226@qq.com"
-        send_resolved: true
-        headers: { Subject: "[db] 报警邮件" } # 接收邮件的标题
-    webhook_configs:
-      - url: http://localhost:8074/dingtalk/db/send
-      - url: http://localhost:8075/dingtalk/ops/send
-  # hadoop
-  - name: hadoop
-    email_configs:
-      - to: "9935226@qq.com"
-        send_resolved: true
-        headers: { Subject: "[hadoop] 报警邮件" } # 接收邮件的标题
-    webhook_configs:
-      - url: http://localhost:8076/dingtalk/hadoop/send
-      - url: http://localhost:8077/dingtalk/ops/send
-
+      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/clipresult_parse_result/
 # 抑制器配置
 inhibit_rules: # 抑制规则
   - source_match: # 源标签警报触发时抑制含有目标标签的警报，在当前警报匹配 status: 'High'
