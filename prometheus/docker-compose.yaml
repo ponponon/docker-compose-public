@@ -36,20 +36,45 @@ services:
     volumes:
       - "/:/host:ro,rslave"
 
-  mysqld-exporter:
-    image: prom/mysqld-exporter
-    container_name: mysqld-exporter
-    environment:
-      - DATA_SOURCE_NAME="root:yjcyjc@(192.168.31.245:3306)/"
+  elasticsearch_exporter:
+    container_name: elasticsearch_exporter
+    image: justwatch/elasticsearch_exporter:1.1.0
+    command:
+      - "--es.uri=http://192.168.31.245:9200"
+      - "--es.all"
+      - "--es.indices"
+      - "--es.cluster_settings"
+      - "--es.indices_settings"
+      - "--es.shards"
+      - "--es.snapshots"
+    restart: always
     ports:
-      - "9093:9093"
-    # command:
-    #   - "--path.rootfs=/host"
-    # network_mode: host
-    # pid: host
-    # restart: unless-stopped
-    # volumes:
-    #   - "/:/host:ro,rslave"
+      - "9114:9114"
+
+  # mysqld-exporter:
+  #   image: prom/mysqld-exporter
+  #   container_name: mysqld-exporter
+  #   environment:
+  #     - DATA_SOURCE_NAME="root:yjcyjc@(192.168.31.245:3306)/"
+  #   ports:
+  #     - "9093:9093"
+
+  # rabbitmq-exporter:
+  #   image: prom/rabbitmq-exporter
+  #   container_name: rabbitmq-exporter
+  #   environment:
+  #     RABBIT_USER: pon
+  #     RABBIT_PASSWORD: pon
+  #   ports:
+  #     - "9093:9093"
+
+  # command:
+  #   - "--path.rootfs=/host"
+  # network_mode: host
+  # pid: host
+  # restart: unless-stopped
+  # volumes:
+  #   - "/:/host:ro,rslave"
 
   # prometheus-webhook-dingtalk:
   #     container_name: prometheus-webhook-dingtalk

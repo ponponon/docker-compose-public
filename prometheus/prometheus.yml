@@ -23,7 +23,15 @@ scrape_configs:
     static_configs:
       - targets: ["192.168.31.245:9100"]
       - targets: ["192.168.31.94:9100"]
-      - targets: ["192.168.31.103:8000"]
+  
+  - job_name: "rabbitmq_monitoring"
+    static_configs:
+      - targets: ["192.168.31.245:15692"]
+
+  - job_name: "elasticsearch_monitoring"
+    static_configs:
+      - targets: ["192.168.31.245:9114"]
+
 
   # # 爬虫监控
   # - job_name: "crawler_monitoring"
