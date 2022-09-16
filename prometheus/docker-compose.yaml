@@ -14,8 +14,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/bot/opt/docker-compose-public/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/bot/opt/docker-compose-public/prometheus/rules:/etc/prometheus/rules/
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules:/etc/prometheus/rules/
 
   alertmanager:
     container_name: alertmanager
@@ -23,7 +23,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - /home/bot/opt/docker-compose-public/prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   node_exporter:
     image: prom/node-exporter
