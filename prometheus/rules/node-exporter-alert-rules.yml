@@ -1,12 +1,11 @@
 groups:
-  - name: test-rules
+  - name: crawl_monitoring-rules
     rules:
       - alert: crawl_monitoring # 告警名称
-        expr: clipresult_parse_result{success="0"} >0 # 告警的判定条件，参考Prometheus高级查询来设定
-        for: 10s # 满足告警条件持续时间多久后，才会发送告警
+        expr: round(sum by(track_source_id, group) (clipresult_parse_result{success="0"}) / sum by(track_source_id, group) (clipresult_parse_result),0.001) > 0 # 告警的判定条件，参考Prometheus高级查询来设定
+        for: 1s # 满足告警条件持续时间多久后，才会发送告警
         labels: #标签项
-          severity: error
+          project: crawl_monitoring
+          level: error
         annotations: # 解析项，详细解释告警信息
-          summary: "track_source_id: {{$labels.track_source_id}} 出现解析失败"
-          description: "track_source_id: {{$labels.track_source_id}} 解析失败 {{ $value }} 次"
-          
+          description: "track_source_id: {{$labels.track_source_id}} 解析失败 {{ $value }} 率"

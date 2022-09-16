@@ -1,50 +1,24 @@
 ## Alertmanager 配置文件
 global:
-  resolve_timeout: 5m
-  # smtp配置
-  smtp_from: "123456789@qq.com"
-  smtp_smarthost: "smtp.qq.com:465"
-  smtp_auth_username: "123456789@qq.com"
-  smtp_auth_password: "auth_pass"
-  smtp_require_tls: true
-# email、企业微信的模板配置存放位置，钉钉的模板会单独讲如果配置。
-templates:
-  - "/data/alertmanager/templates/*.tmpl"
+  resolve_timeout: 10s
+
 # 路由分组
 route:
-  receiver: ops
+  receiver: default-receiver
   group_wait: 10s # 在组内等待所配置的时间，如果同组内，30秒内出现相同报警，在一个组内出现。
   group_interval: 10s # 如果组内内容不变化，合并为一条警报信息，5m后发送。
-  repeat_interval: 24h # 发送报警间隔，如果指定时间内没有修复，则重新发送报警。
-  group_by: [alertname] # 报警分组
-
+  repeat_interval: 10s # 发送报警间隔，如果指定时间内没有修复，则重新发送报警。
   routes:
-    - match:
-        team: operations
-      group_by: [env, dc]
-      receiver: "ops"
-    # 接收器
-    # 抑制测试配置
-    - receiver: ops
-      group_wait: 10s
-      match:
-        status: "High"
-    # ops
-    - receiver: ops # 路由和标签，根据match来指定发送目标，如果 rule的lable 包含 alertname， 使用 ops 来发送
-      group_wait: 10s
-      match:
-        team: operations
+  - receiver: crawl_monitoring
+    # group_by: [product, environment]
+    match:
+      project: crawl_monitoring
+
 receivers:
-  # ops分组的定义
-  - name: ops
-    # 钉钉配置
+  - name: default-receiver
     webhook_configs:
-      # - url: http://192.168.31.245:5002/
-      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/clipresult_parse_result/
-# 抑制器配置
-inhibit_rules: # 抑制规则
-  - source_match: # 源标签警报触发时抑制含有目标标签的警报，在当前警报匹配 status: 'High'
-      status: "High" # 此处的抑制匹配一定在最上面的route中配置不然，会提示找不key。
-    target_match:
-      status: "Warning" # 目标标签值正则匹配，可以是正则表达式如: ".*MySQL.*"
-    equal: ["alertname", "operations", "instance"] # 确保这个配置下的标签内容相同才会抑制，也就是说警报中必须有这三个标签值才会被抑制。
+      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/push/default-receiver/
+  
+  - name: crawl_monitoring
+    webhook_configs:
+      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/push/clipresult_parse_result/
