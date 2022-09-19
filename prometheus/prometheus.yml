@@ -38,11 +38,11 @@ scrape_configs:
 
 
   # 爬虫监控
-  # - job_name: "crawler_monitoring"
-  #   scrape_interval: 300s
-  #   static_configs:
-  #       - targets: ["192.168.31.103:8000"]
-      #   - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
+  - job_name: "crawler_monitoring"
+    scrape_interval: 3s
+    static_configs:
+        - targets: ["192.168.31.103:8000"]
+        # - targets: ["http://crawler-monitoring-server-prod.mediawise.svc.cluster.local:8000"]
 
   # - job_name: "meta-console-metrics"
   #   scrape_interval: 60s

@@ -10,15 +10,15 @@ route:
   repeat_interval: 10s # 发送报警间隔，如果指定时间内没有修复，则重新发送报警。
   routes:
   - receiver: crawl_monitoring
-    # group_by: [product, environment]
+    group_by: [project]
     match:
       project: crawl_monitoring
 
 receivers:
   - name: default-receiver
     webhook_configs:
-      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/push/default-receiver/
+      - url: http://192.168.31.103:8110/push/default-receiver/
   
   - name: crawl_monitoring
     webhook_configs:
-      - url: http://alertmanager-webhook-api-server-prod.mediawise.svc.cluster.local:8110/push/clipresult_parse_result/
+      - url: http://192.168.31.103:8110/push/clipresult_parse_result/
