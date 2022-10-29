@@ -9,3 +9,11 @@ groups:
           level: error
         annotations: # 解析项，详细解释告警信息
           description: "track_source_id: {{$labels.track_source_id}} 解析失败 {{ $value }} 率"
+      - alert: crawl_monitoring_count # 告警名称
+        expr: clipresult_parse_result{success="0"} > 0 # 告警的判定条件，参考Prometheus高级查询来设定
+        for: 1s # 满足告警条件持续时间多久后，才会发送告警
+        labels: #标签项
+          project: crawl_monitoring
+          level: error
+        annotations: # 解析项，详细解释告警信息
+          description: "track_source_id: {{$labels.track_source_id}} 解析失败 {{ $value }} 次"
