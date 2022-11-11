@@ -4,9 +4,9 @@ services:
       container_name: public_minio
       image: minio/minio
       ports:
-        - "9000:9000"
-        - "9001:9001"
-      command: server /data --console-address ":9001" #指定容器中的目录 /data
+        - "9000:9000" # client port
+        - "9002:9002" # console port
+      command: server /data --console-address ":9002" #指定容器中的目录 /data
       environment:
         MINIO_ACCESS_KEY: ponponon #管理后台用户名
         MINIO_SECRET_KEY: ponponon #管理后台密码，最小8个字符
