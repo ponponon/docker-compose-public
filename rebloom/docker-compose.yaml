@@ -3,10 +3,10 @@ version: "3"
 services: 
   redis:
     container_name: rebloom
+    restart: always
     image: redislabs/rebloom:latest
     ports:
       - "6379:6379"
     volumes:
       - ./volumes:/data # /usr/local/redis/data 是你宿主机的路径；/data 是容器内的路径，容器内的 redis 会把需要持久化的数据都保存到 /data 目录下
       - ./redis.conf:/etc/redis/redis.conf # redis.conf 这个文件已经准备好了，可以放到这个路径，也可以自己修改，比如放到项目路径中
-    restart: always
