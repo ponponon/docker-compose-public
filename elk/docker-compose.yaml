@@ -2,7 +2,7 @@ version: "3"
 services:
   elk-elasticsearch:
     container_name: elk-elasticsearch
-    image: elasticsearch:7.17.1
+    image: elasticsearch:7.17.8
     restart: always
     ports:
       - "9200:9200"
@@ -16,7 +16,7 @@ services:
 
   elk-kibana:
     container_name: elk-kibana
-    image: kibana:7.17.1
+    image: kibana:7.17.8
     restart: always
     ports:
       - "5601:5601"
