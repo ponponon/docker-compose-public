@@ -1,0 +1,14 @@
+PID   USER     TIME  COMMAND
+    1 root      0:00 bash /entrypoint.sh
+    9 root      0:06 /usr/bin/java -Dproc_zookeeper -XX:OnOutOfMemoryError=kill -9 %p -XX:+UseConcMarkSweepGC -Dhbase.log.dir=/hbase/logs -Dhbase.log.file=hbase.log -Dhbase.home.dir=/hbase -Dh
+   31 root      0:00 bash /hbase/bin/hbase-daemon.sh --config /hbase/conf foreground_start master
+   45 root      0:33 /usr/bin/java -Dproc_master -XX:OnOutOfMemoryError=kill -9 %p -XX:+UseConcMarkSweepGC -Dhbase.log.dir=/hbase/logs -Dhbase.log.file=hbase--master-6b13560ced8a.log -Dhbase.h
+  148 root      0:00 bash /hbase/bin/hbase-daemon.sh --config /hbase/conf foreground_start regionserver
+  162 root      0:33 /usr/bin/java -Dproc_regionserver -XX:OnOutOfMemoryError=kill -9 %p -XX:+UseConcMarkSweepGC -Dhbase.log.dir=/hbase/logs -Dhbase.log.file=hbase--regionserver-6b13560ced8a.l
+  230 root      0:00 bash /hbase/bin/hbase-daemon.sh --config /hbase/conf foreground_start rest
+  245 root      0:18 /usr/bin/java -Dproc_rest -XX:OnOutOfMemoryError=kill -9 %p -XX:+UseConcMarkSweepGC -Dhbase.log.dir=/hbase/logs -Dhbase.log.file=hbase--rest-6b13560ced8a.log -Dhbase.home.
+  313 root      0:00 bash /hbase/bin/hbase-daemon.sh --config /hbase/conf foreground_start thrift
+  327 root      0:10 /usr/bin/java -Dproc_thrift -XX:OnOutOfMemoryError=kill -9 %p -XX:+UseConcMarkSweepGC -Dhbase.log.dir=/hbase/logs -Dhbase.log.file=hbase--thrift-6b13560ced8a.log -Dhbase.h
+  382 root      0:00 tail -f /dev/null /hbase/logs/SecurityAuth.audit /hbase/logs/hbase--master-6b13560ced8a.log /hbase/logs/hbase--master-6b13560ced8a.out /hbase/logs/hbase--regionserver-6b13
+  691 root      0:00 bash
+  697 root      0:00 ps jfax

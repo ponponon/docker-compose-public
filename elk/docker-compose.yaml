@@ -9,7 +9,7 @@ services:
       - "9300:9300"
     environment:
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms3g -Xmx3g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
+      - "ES_JAVA_OPTS=-Xms4g -Xmx4g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
     volumes:
       - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
       - ./volumes/elk-elasticsearch/:/usr/share/elasticsearch/data/
