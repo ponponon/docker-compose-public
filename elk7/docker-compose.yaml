@@ -1,0 +1,35 @@
+version: "3"
+services:
+  elk-elasticsearch-7:
+    container_name: elk-elasticsearch-7
+    image: elasticsearch:7.17.8
+    restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
+      - ./volumes/elk-elasticsearch/:/usr/share/elasticsearch/data/
+
+  elk-kibana-7:
+    container_name: elk-kibana-7
+    image: kibana:7.17.8
+    restart: always
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elk-elasticsearch:9200
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
+
+  elk-cerebro:
+    container_name: elk-cerebro
+    image: lmenezes/cerebro:0.9.4
+    restart: always
+    ports:
+      - "7001:7001"
+    environment:
+      - CEREBRO_PORT=7001
