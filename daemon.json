@@ -1,6 +1,11 @@
 {
   "registry-mirrors": [
+    "https://hz4anb2p.mirror.aliyuncs.com",
+    "https://mirror.ccs.tencentyun.com",
     "https://hub-mirror.c.163.com",
     "https://mirror.baidubce.com"
+  ],
+  "insecure-registries": [
+    "192.168.31.245:8082"
   ]
 }
