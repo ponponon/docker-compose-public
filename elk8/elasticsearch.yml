@@ -7,3 +7,6 @@ network.host: 0.0.0.0
 discovery.type: single-node
 
 indices.query.bool.max_clause_count: 1024000
+
+http.port: 9201
+transport.tcp.port: 9301

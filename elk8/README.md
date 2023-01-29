@@ -1,0 +1,1 @@
+[ elasticsearch配置](https://www.cnblogs.com/hanyouchun/p/5163183.html)
