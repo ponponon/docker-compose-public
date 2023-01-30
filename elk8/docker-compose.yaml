@@ -5,7 +5,9 @@ services:
     image: elasticsearch:8.5.3
     restart: always
     ports:
+      - "9200:9200"
       - "9201:9201"
+      - "9300:9300"
       - "9301:9301"
     environment:
       - discovery.type=single-node
@@ -20,8 +22,8 @@ services:
     restart: always
     ports:
       - "5602:5602"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elk-elasticsearch-8:9201
+    # environment:
+    #   - ELASTICSEARCH_HOSTS=http://elk-elasticsearch-8:9201
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
 
@@ -33,3 +35,4 @@ services:
       - "7002:7002"
     environment:
       - CEREBRO_PORT=7002
+

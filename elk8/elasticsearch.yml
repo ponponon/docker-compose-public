@@ -9,4 +9,8 @@ discovery.type: single-node
 indices.query.bool.max_clause_count: 1024000
 
 http.port: 9201
-transport.tcp.port: 9301
+transport.port: 9301
+
+xpack.security.enabled: false
+xpack.security.http.ssl.enabled: false
+xpack.security.transport.ssl.enabled: false
