@@ -1,13 +1,16 @@
 version: "3.6"
 services:
-  web:
+  gitlab:
+    container_name: gitlab
     image: "gitlab/gitlab-ce:latest"
     restart: always
     hostname: "192.168.38.191"
     environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://192.168.38.191:8929'
-        gitlab_rails['gitlab_shell_ssh_port'] = 2224
+      # GITLAB_OMNIBUS_CONFIG: |
+      #   external_url 'http://192.168.38.191:8929'
+      #   gitlab_rails['gitlab_shell_ssh_port'] = 2224
+      EXTERNAL_URL: http://192.168.38.191:8929
+      GITLAB_ROOT_PASSWORD: ponponon
     ports:
       - "8929:8929"
       - "2224:22"
