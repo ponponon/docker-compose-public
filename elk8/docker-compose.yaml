@@ -1,38 +1,68 @@
 version: "3"
 services:
-  elk-elasticsearch-8:
-    container_name: elk-elasticsearch-8
-    image: elasticsearch:8.5.3
-    restart: always
-    ports:
-      - "9200:9200"
-      - "9201:9201"
-      - "9300:9300"
-      - "9301:9301"
-    environment:
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
-    volumes:
-      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
-      - ./volumes/elk-elasticsearch/:/usr/share/elasticsearch/data/
+  # elk-elasticsearch-8:
+  #   container_name: elk-elasticsearch-8
+  #   image: elasticsearch:8.5.3
+  #   restart: always
+  #   ports:
+  #     - "9201:9200"
+  #     # - "9201:9201"
+  #     - "9301:9300"
+  #     # - "9301:9301"
+  #   environment:
+  #     - discovery.type=single-node
+  #     - "ES_JAVA_OPTS=-Xms2g -Xmx2g" # 限制 es 的内存大小，不然会吃掉 10GB+ 的 RAM
+  #   # volumes:
+  #   #   - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
+  #   #   # - ./volumes/elk-elasticsearch/:/usr/share/elasticsearch/data/
 
   elk-kibana-8:
     container_name: elk-kibana-8
     image: kibana:8.5.3
     restart: always
     ports:
-      - "5602:5602"
+      - "5602:5601"
     # environment:
-    #   - ELASTICSEARCH_HOSTS=http://elk-elasticsearch-8:9201
+    #   - ELASTICSEARCH_HOSTS=http://192.168.38.191:9200
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
 
-  elk-cerebro:
-    container_name: elk-cerebro
-    image: lmenezes/cerebro:0.9.4
-    restart: always
-    ports:
-      - "7002:7002"
-    environment:
-      - CEREBRO_PORT=7002
+# elk-cerebro:
+#   container_name: elk-cerebro
+#   image: lmenezes/cerebro:0.9.4
+#   restart: always
+#   ports:
+#     - "7002:7002"
+#   environment:
+#     - CEREBRO_PORT=7002
 
+# version: "3.8"
+# services:
+#   elasticsearch:
+#     image: docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+#     container_name: elasticsearch
+#     environment:
+#       - discovery.type=single-node
+#       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#     volumes:
+#       # - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # kibana 其实是支持中文的，只要在 /usr/share/kibana/config/kibana.yml 加一行 i18n.locale: "zh-CN"
+#       - ./volumes/elk-elasticsearch/data:/usr/share/elasticsearch/data/
+#       - ./volumes/elk-elasticsearch/logs:/usr/share/elasticsearch/logs/
+#     ports:
+#       - 9201:9200
+#       - 9301:9300
+#     networks:
+#       - elastic
+
+#   kibana:
+#     image: docker.elastic.co/kibana/kibana:8.5.3
+#     container_name: kibana
+#     ports:
+#       - 5602:5601
+#     environment:
+#       ELASTICSEARCH_URL: http://elasticsearch:9200
+#     networks:
+#       - elastic
+
+# networks:
+#   elastic:

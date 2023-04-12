@@ -4,7 +4,7 @@
 
 # Default Kibana configuration for docker target
 server.host: "0.0.0.0"
-server.port: 5602
+server.port: 5601
 server.shutdownTimeout: "5s"
 elasticsearch.hosts: ["http://elk-elasticsearch-8:9201"]
 monitoring.ui.container.elasticsearch.enabled: true
