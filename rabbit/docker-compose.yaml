@@ -14,7 +14,7 @@ services:
       - RABBITMQ_DEFAULT_USER=pon
       - RABBITMQ_DEFAULT_PASS=pon
     volumes:
-      # - "./volumes:/var/lib/rabbitmq"
+      - "./volumes:/var/lib/rabbitmq"
       - "./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
     ports:
       - "5672:5672"
