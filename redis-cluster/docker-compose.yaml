@@ -1,0 +1,43 @@
+version: "3"
+services:
+  redis-1:
+    image: redis:6.2-alpine
+    # command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+    # volumes:
+    #   - ./redis.conf:/usr/local/etc/redis/redis.conf
+    #   - redis-data:/data
+    networks:
+      - redis-cluster
+
+  redis-2:
+    image: redis:6.2-alpine
+    # command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6380:6379"
+    # volumes:
+    #   - ./redis.conf:/usr/local/etc/redis/redis.conf
+    #   - redis-data:/data
+    networks:
+      - redis-cluster
+
+  redis-3:
+    image: redis:6.2-alpine
+    # command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    ports:
+      - "6381:6379"
+    # volumes:
+    #   - ./redis.conf:/usr/local/etc/redis/redis.conf
+    #   - redis-data:/data
+    networks:
+      - redis-cluster
+
+  # Add more Redis nodes here ...
+
+volumes:
+  redis-data:
+
+networks:
+  redis-cluster:
+    driver: bridge
