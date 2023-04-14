@@ -1,0 +1,10 @@
+version: "3"
+services:
+  redis-cluster:
+    container_name: redis-cluster
+    image: ponponon/redis-cluster
+    # command: ["/bin/sh", "-c", "redis-server", "/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/etc/redis/redis.conf
