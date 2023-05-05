@@ -10,4 +10,3 @@ RUN apt update
 RUN apt install -y vim gcc g++ cmake make
 RUN apt install -y redis-server
 CMD ["redis-server", "/etc/redis/redis.conf"]
-
