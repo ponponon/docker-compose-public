@@ -1,0 +1,42 @@
+version: '3'
+
+networks:
+  rustdesk-net:
+    external: false
+
+services:
+  rustdesk-hbbs:
+    container_name: rustdesk-hbbs
+    ports:
+      - 21115:21115
+      - 7111:21116 # 自定义 hbbs 映射端口
+      - 7111:21116/udp # 自定义 hbbs 映射端口
+    image: rustdesk/rustdesk-server:1.1.6
+    command: hbbs -r 192.168.31.245:7112 # 填入个人域名或 IP + hbbr 暴露端口
+    # volumes:
+    #   - <mount_path>:/root # 自定义挂载目录
+    networks:
+      - rustdesk-net
+    depends_on:
+      - rustdesk-hbbr
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  rustdesk-hbbr:
+    container_name: rustdesk-hbbr
+    ports:
+      - 7112:21117 # 自定义 hbbr 映射端口
+    image: rustdesk/rustdesk-server:1.1.6 # 镜像选用 arm64 版
+    command: hbbr
+    # volumes:
+    #   - <mount_path>:/root # 自定义挂载目录
+    networks:
+      - rustdesk-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
