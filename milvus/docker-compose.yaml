@@ -3,7 +3,7 @@ version: "3.5"
 services:
   etcd:
     container_name: milvus-etcd
-    image: quay.io/coreos/etcd:v3.5.0
+    image: quay.io/coreos/etcd:v3.5.5
     restart: always
     environment:
       - ETCD_AUTO_COMPACTION_MODE=revision
@@ -44,7 +44,7 @@ services:
 
   standalone:
     container_name: milvus-standalone
-    image: milvusdb/milvus:v2.2.2
+    image: milvusdb/milvus:v2.2.9
     command: ["milvus", "run", "standalone"]
     restart: always
     environment:
@@ -66,7 +66,7 @@ services:
 
   zilliz_attu:
     container_name: zilliz_attu
-    image: zilliz/attu:v2.2.4
+    image: zilliz/attu:v2.2.5
     restart: always
     environment:
       HOST_URL: http://192.168.38.191:8000
