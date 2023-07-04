@@ -69,8 +69,8 @@ services:
     image: zilliz/attu:v2.2.5
     restart: always
     environment:
-      HOST_URL: http://192.168.38.191:8000
-      MILVUS_URL: 192.168.38.191:19530
+      HOST_URL: http://0.0.0.0:8000
+      MILVUS_URL: milvus-standalone:19530
     ports:
       - "8000:3000"
 
