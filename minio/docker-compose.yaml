@@ -2,6 +2,7 @@ version: "3"
 services:
     public_minio:
       container_name: public_minio
+      restart: always
       image: minio/minio
       ports:
         - "9000:9000" # client port
