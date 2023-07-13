@@ -8,6 +8,8 @@ services:
         - "9000:9000" # client port
         - "9002:9002" # console port
       command: server /data --console-address ":9002" #指定容器中的目录 /data
+      volumes:
+      - ./volumes/:/data
       environment:
         MINIO_ACCESS_KEY: ponponon #管理后台用户名
         MINIO_SECRET_KEY: ponponon #管理后台密码，最小8个字符
