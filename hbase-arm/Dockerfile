@@ -8,4 +8,4 @@ EOF
 
 RUN apt-get update
 RUN apt-get install -y vim
-RUN apt-get install -y openjdk-11-jdk
+RUN apt-get install -y openjdk-17-jdk
