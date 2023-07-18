@@ -18,6 +18,4 @@ RUN tar xvf /root/hbase-2.4.17-bin.tar.gz
 
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64" | tee -a /etc/profile >/dev/null
 
-# docker run --rm -it ponponon/hbase-arm bash
-# cd /root/hbase-2.4.17
-# JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64 bash bin/hbase-daemon.sh start master 
+COPY entrypoint.sh /root/
