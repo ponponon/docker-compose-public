@@ -1,4 +1,4 @@
-NAME = ponponon/hbase-arm-buster
+NAME = ponponon/hbase-arm-focal
 VERSION = 0.0.1
 
 .PHONY: build up stop logs
