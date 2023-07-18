@@ -1,5 +1,5 @@
-NAME = ponponon/hbase-x86-focal
-VERSION = 0.0.1
+NAME = ponponon/hbase
+VERSION = 2.4.17
 
 .PHONY: build up stop logs
 
@@ -9,7 +9,7 @@ stop: docker-compose-stop
 logs: docker-compose-logs
 
 docker-build:
-	docker build -t "${NAME}" .
+	docker build -t "${NAME}:${VERSION}" .
 
 docker-compose-up:
 	docker-compose up -d
