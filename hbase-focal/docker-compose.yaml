@@ -1,9 +1,9 @@
 version: "3"
 services:
-  hbase-master:
-    container_name: hbase-master
-    image: ponponon/hbase-x86-focal
-    # restart: always
+  hbase-standalone:
+    container_name: hbase-standalone
+    image: ponponon/hbase:2.4.17
+    restart: always
     ports:
       - "2181:2181"
       - "8080:8080"
@@ -16,15 +16,3 @@ services:
       - "16020:16020"
       - "16030:16030"
       - "16301:16301"
-    environment:
-      - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-    command: 'bash entrypoint.sh'
-  # hbase-thrift:
-  #   container_name: hbase-thrift
-  #   image: ponponon/hbase-x86-focal
-  #   # restart: always
-  #   ports:
-  #     - "9090:9090"
-  #   environment:
-  #     - JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-  #   command: 'bash /root/hbase-2.4.17/bin/hbase-daemon.sh start thrift --bind hbase-master'
