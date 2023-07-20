@@ -32,16 +32,16 @@ WORKDIR /root
 RUN wget -P /root https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/2.4.17/hbase-2.4.17-bin.tar.gz
 RUN tar xvf /root/hbase-2.4.17-bin.tar.gz
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
-    export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-arm64" && \
-    echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-arm64"' >> /etc/environment \
-    elif [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
-    export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" && \
-    echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"' >> /etc/environment \
-    fi
+ARG TARGETPLATFORM
+ENV TARGETPLATFORM=${TARGETPLATFORM}
 
+ARG TARGETARCH
+ENV TARGETARCH=${TARGETARCH}
+
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-${TARGETARCH}
 
 
 COPY entrypoint.sh /root/
+RUN chmod +x /root/entrypoint.sh
 
 CMD ["/root/entrypoint.sh"]
